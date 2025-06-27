@@ -1,3 +1,4 @@
+import { deleteSnippet } from "@/actions";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft } from "lucide-react";
@@ -25,6 +26,9 @@ const SnippetDetailPage = async ({ params }: { params: Promise<{ id: string }> }
         );
     }
 
+    // Delete snippet in sqlite by server action
+    const delteSnippetAction = deleteSnippet.bind(null, snippet.id);
+
     return (
         <main className="max-w-3xl mx-auto px-6 py-12">
             <Link
@@ -42,7 +46,7 @@ const SnippetDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                     <Link href={`/snippet/${id}/edit`}>
                         <Button>Edit</Button>
                     </Link>
-                    <Button variant="destructive">Delete</Button>
+                    <Button onClick={delteSnippetAction} variant="destructive">Delete</Button>
                 </div>
             </div>
 
