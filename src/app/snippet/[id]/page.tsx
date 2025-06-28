@@ -60,3 +60,12 @@ const SnippetDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 };
 
 export default SnippetDetailPage;
+
+// For caching the data of a dynamic route
+export const generateStaticParams = async () => {
+    const snippets = await prisma.snippet.findMany();
+
+    return snippets.map((snippet) => {
+        return { id: snippet.id.toString() };
+    })
+}
