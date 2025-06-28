@@ -1,4 +1,5 @@
 import { deleteSnippet } from "@/actions";
+import CodeBlock from "@/components/CodeBlock";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft } from "lucide-react";
@@ -14,11 +15,11 @@ const SnippetDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
     if (!snippet) {
         return (
-            <div className="max-w-3xl mx-auto px-6 py-12 text-center">
-                <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-12 text-center">
+                <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white">
                     Snippet not found
                 </h1>
-                <p className="text-gray-500 mt-2">Try going back to the snippets list.</p>
+                <p className="text-gray-500 mt-2 text-sm sm:text-base">Go back to Home.</p>
                 <Link href="/" className="flex gap-1 justify-center items-center mt-4 text-sm text-blue-600 hover:underline">
                     <ArrowLeft /> Back to Home
                 </Link>
@@ -30,7 +31,7 @@ const SnippetDetailPage = async ({ params }: { params: Promise<{ id: string }> }
     const delteSnippetAction = deleteSnippet.bind(null, snippet.id);
 
     return (
-        <main className="max-w-3xl mx-auto px-6 py-12">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-10 pt-5 sm:pt-7">
             <Link
                 href="/"
                 className="flex gap-1 items-center text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition mb-6"
@@ -38,24 +39,33 @@ const SnippetDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                 <ArrowLeft /> Back to All Snippets
             </Link>
 
-            <div className="flex items-center justify-between mb-4">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2 mb-4">
+                <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white break-words">
                     {snippet.title}
                 </h1>
-                <div className="flex gap-2">
+                {/* Shown Edit and delete Btn above the content only in desktop */}
+                <div className="hidden sm:flex gap-2">
                     <Link href={`/snippet/${id}/edit`}>
                         <Button>Edit</Button>
                     </Link>
-                    <Button onClick={delteSnippetAction} variant="destructive">Delete</Button>
+                    <Button onClick={delteSnippetAction} variant="destructive">
+                        Delete
+                    </Button>
                 </div>
             </div>
 
-            <div className="rounded-lg overflow-auto border border-gray-200 dark:border-zinc-800 bg-gray-100 dark:bg-zinc-900 p-4">
-                <pre className="whitespace-pre-wrap font-mono text-sm text-gray-800 dark:text-gray-200">
-                    <code>{snippet.code}</code>
-                </pre>
+            <CodeBlock code={snippet.code} />
+
+            {/* Show Edit and delete Btn below the content in mobile only  */}
+            <div className="flex sm:hidden flex-col gap-2 mt-6">
+                <Link href={`/snippet/${id}/edit`}>
+                    <Button className="w-full">Edit</Button>
+                </Link>
+                <Button onClick={delteSnippetAction} variant="destructive" className="w-full">
+                    Delete
+                </Button>
             </div>
-        </main>
+        </div>
     );
 };
 

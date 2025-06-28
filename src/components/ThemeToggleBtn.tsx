@@ -48,6 +48,7 @@ const ShareButton: React.FC = () => {
             ) : (
                 <button
                     onClick={copyLink}
+                    title='Copy link'
                     aria-label="Copy link to clipboard"
                     className="bg-white dark:bg-black text-black dark:text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center hover:bg-neutral-200 dark:hover:bg-neutral-800 transition "
                 >
